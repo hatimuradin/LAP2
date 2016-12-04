@@ -3,6 +3,7 @@ function [client_theta] = auxMRFLearn(graph_nodes, PF_aux, PF_inputs, PF_index, 
     client_theta = zeros(1, size(PF_aux, 2));
     SS = computeSS(PF_aux, PF_inputs, X);
     MaxIter = 100;
+    etha = 0.001;
     share_step = 10;
     update_factor = 0.5;
     

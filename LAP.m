@@ -3,8 +3,8 @@ clear all;
 digits(100);
 
 %Grid-like graph
-graphHeight = 4;
-graphWidth = 4;
+graphHeight = 2;
+graphWidth = 2;
 
 numSamples = 5;
 
@@ -88,24 +88,24 @@ cliques = maximalCliques(adj, 'v2');
 PF_main = {};
 PF_main_inputs = {};
 
+for i=1:size(adj, 1)
+        PF_main{end+1} = @(x) x(1);
+        PF_main_inputs{end+1} = i;
+end
+
 for i=1:length(cliques')
     [row, col, val] = find(cliques(:, i)');
-    PF_main{end+1} = @(x) x;
-    PF_main_inputs{end+1} = col(1);
-    
-    PF_main{end+1} = @(x) x;
-    PF_main_inputs{end+1} = col(2);
     
     PF_main{end+1} = @(x) x(1)*x(2);
     PF_main_inputs{end+1} = col;
 end
 
-save('common.mat', 'cliques', 'adj', 'PF_main', 'PF_main_inputs');
+save('common.mat', 'cliques', 'adj', 'PF_main', 'PF_main_inputs', 'allSamples');
 theta = zeros(size(PF_main));
-save('theta.m', 'theta');
+save('theta.mat', 'theta');
 
-machines = {};
-eval(MPI_Run('client_main',1 , machines));
+MatMPI_Delete_all
+eval(MPI_Run('client_main',1 , {}));
 %%
 % 
 % for c=1:length(cliques)
