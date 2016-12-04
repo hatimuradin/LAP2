@@ -2,8 +2,8 @@ function [client_theta] = auxMRFLearn(graph_nodes, PF_aux, PF_inputs, PF_index, 
     %  Computing SS = [sumf1(samples), sumf2(samples), ..., sumfn(samples)]
     client_theta = zeros(1, size(PF_aux, 2));
     SS = computeSS(PF_aux, PF_inputs, X);
-    MaxIter = 100;
-    share_step = 10;
+    MaxIter = 1000;
+    share_step = 200;
     update_factor = 0.5;
     
     for iter = 1:MaxIter
@@ -55,8 +55,8 @@ function [client_theta] = auxMRFLearn(graph_nodes, PF_aux, PF_inputs, PF_index, 
         if (mod(iter, share_step) == 0)
                 shareind = PF_index > 0;
                 load('theta.mat', 'theta');
-                client_theta(shareind) = update_factor * theta(shareind) + (1 - update_factor) * client_theta(shareind);
-                theta(shareind) = client_theta(shareind);
+                client_theta(shareind) = update_factor * theta(PF_index(shareind)) + (1 - update_factor) * client_theta(shareind);
+                theta(PF_index(shareind)) = client_theta(shareind);
                 save('theta.mat', 'theta');
         end
     end    

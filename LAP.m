@@ -1,5 +1,7 @@
 clear all;
 
+rng(1625);
+
 digits(100);
 
 %Grid-like graph
@@ -106,6 +108,8 @@ save('theta.mat', 'theta');
 
 MatMPI_Delete_all
 eval(MPI_Run('client_main',1 , {}));
+
+[w1(1) w1(2) w2(1,2), w2(1, 3), w2(2, 4)]
 %%
 % 
 % for c=1:length(cliques)
