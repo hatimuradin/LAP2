@@ -8,7 +8,7 @@ digits(100);
 graphHeight = 2;
 graphWidth = 2;
 
-numSamples = 5;
+numSamples = 500;
 
 totalFeatures = graphHeight * graphWidth;
 
@@ -102,7 +102,7 @@ for i=1:length(cliques')
     PF_main_inputs{end+1} = col;
 end
 
-save('common.mat', 'cliques', 'adj', 'PF_main', 'PF_main_inputs', 'allSamples');
+save('common.mat', 'cliques', 'adj', 'PF_main', 'PF_main_inputs', 'allSamples','w1','w2');
 theta = zeros(size(PF_main));
 save('theta.mat', 'theta');
 
