@@ -8,7 +8,7 @@ digits(100);
 graphHeight = 2;
 graphWidth = 2;
 
-numSamples = 500;
+numSamples = 200000;
 
 totalFeatures = graphHeight * graphWidth;
 
@@ -42,6 +42,14 @@ w2 = triu(rand(totalFeatures,totalFeatures),1);
 w2 = w2 .* adj;
 
 w1 = rand(1,totalFeatures);
+
+
+% w1 = [1 1 1 1];
+% w2 = [0 1 1 0;
+%     0 0 0 1;
+%     0 0 0 1;
+%     0 0 0 0];
+
 
 %making all outcomes
 for t=1:2^totalFeatures
@@ -101,6 +109,7 @@ for i=1:length(cliques')
     PF_main{end+1} = @(x) x(1)*x(2);
     PF_main_inputs{end+1} = col;
 end
+
 
 save('common.mat', 'cliques', 'adj', 'PF_main', 'PF_main_inputs', 'allSamples','w1','w2');
 theta = zeros(size(PF_main));

@@ -3,17 +3,12 @@ function [client_theta] = auxMRFLearn(graph_nodes, PF_aux, PF_inputs, PF_index, 
     client_theta = zeros(1, size(PF_aux, 2));
     
     SS = computeSS(PF_aux, PF_inputs, X);
-    MaxIter = 1000;
-    share_step = 200000;
+    MaxIter = 200;
+    share_step = 10;
     update_factor = 0.5;
     
     
-    tmp_client_theta = client_theta;
-    load('common.mat');
-    tmp_client_theta(1:5) = [w1(1) w1(2) w2(1,2), w2(1, 3), w2(2, 4)];
-    log_likelihood(SS, tmp_client_theta, graph_nodes, size(X,1), PF_aux, PF_inputs)
-    disp('-------------------');
-    pause;
+    
     
     
     for iter = 1:MaxIter
@@ -51,7 +46,7 @@ function [client_theta] = auxMRFLearn(graph_nodes, PF_aux, PF_inputs, PF_index, 
         %tic 
         current_log_likelihood = log_likelihood(SS, client_theta, graph_nodes, size(X,1), PF_aux, PF_inputs, logZ); 
         current_log_likelihood
-        pause
+%         pause
         while true
             if log_likelihood(SS, client_theta + etha*delta_theta, graph_nodes, size(X,1), PF_aux, PF_inputs) < current_log_likelihood + alpha*etha*grad*delta_theta'
                 etha = beta*etha;
@@ -61,6 +56,7 @@ function [client_theta] = auxMRFLearn(graph_nodes, PF_aux, PF_inputs, PF_index, 
         end
         %toc 
         %%%%
+        disp(['etha = ' num2str(etha)]);
         client_theta = client_theta + etha * delta_theta
         
         theta = [];
@@ -74,4 +70,10 @@ function [client_theta] = auxMRFLearn(graph_nodes, PF_aux, PF_inputs, PF_index, 
     end    
     %%
 
+    disp('---log likelihood of the original theta:');
+    load('common.mat');
+    tmp_client_theta = [w1(1) w1(2) w2(1,2), w2(1, 3), w2(2, 4), w1(3), w2(3,4), w1(4)];
+    log_likelihood(SS, tmp_client_theta, graph_nodes, size(X,1), PF_aux, PF_inputs)
+    disp('-------------------');    
+    
 end
